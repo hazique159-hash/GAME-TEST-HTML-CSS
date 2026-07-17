@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERMATCH 2077 // Neural Memory Interface</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Orbitron, Share Tech Mono, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Scanline Scroller Overlay -->
+  <div class="scanline-scroller"></div>
+
+  <div class="container py-4">
+    <!-- Header glitched logo -->
+    <header class="mb-4">
+      <h1 class="glitch-title" data-text="CYBERMATCH">CYBERMATCH</h1>
+      <div class="text-center font-mono text-neon-cyan small tracking-wider">
+        <span class="opacity-50">//</span> NEURAL MEMORY RECONSTRUCTION CONSOLE v2.077 <span class="opacity-50">//</span>
+      </div>
+    </header>
+
+    <div class="row">
+      <!-- Left Column: Controls & Analytics Dashboard -->
+      <div class="col-lg-4 mb-4">
+        <!-- Control Panel -->
+        <div class="cyber-panel cyber-panel-cyan p-4 mb-4">
+          <h2 class="font-orbitron fs-5 text-neon-cyan mb-4 d-flex justify-content-between align-items-center">
+            <span>INTERFACE CONTROLS</span>
+            <i class="fa-solid fa-sliders"></i>
+          </h2>
+
+          <!-- Difficulty Selector -->
+          <div class="mb-4">
+            <label class="stat-label mb-2 d-block">GRID COMPLEXITY</label>
+            <div class="btn-group cyber-btn-group w-100" role="group" aria-label="Complexity">
+              <input type="radio" class="btn-check" name="difficulty" id="diff-easy" value="easy" checked>
+              <label class="btn cyber-btn w-100" for="diff-easy">EASY (4x4)</label>
+
+              <input type="radio" class="btn-check" name="difficulty" id="diff-medium" value="medium">
+              <label class="btn cyber-btn w-100" for="diff-medium">MEDIUM (6x4)</label>
+
+              <input type="radio" class="btn-check" name="difficulty" id="diff-hard" value="hard">
+              <label class="btn cyber-btn w-100" for="diff-hard">HARD (6x6)</label>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="row g-2 mb-4">
+            <div class="col-6">
+              <button class="cyber-btn w-100" id="btn-initiate">
+                <i class="fa-solid fa-power-off me-1"></i> INIT SYNC
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="cyber-btn cyber-btn-magenta w-100" id="btn-mute">
+                <i class="fa-solid fa-volume-high me-1" id="mute-icon"></i> AUDIO ON
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Game Analytics -->
+          <label class="stat-label mb-2 d-block">TELEMETRY DATA</label>
+          <div class="row g-2">
+            <!-- Score -->
+            <div class="col-6">
+              <div class="stat-box">
+                <div class="stat-label">NEURAL SCORE</div>
+                <div class="stat-value text-neon-cyan" id="stat-score">00000</div>
+              </div>
+            </div>
+            <!-- Timer / Circular -->
+            <div class="col-6">
+              <div class="stat-box d-flex flex-column align-items-center justify-content-center" style="height: 87px;">
+                <div class="stat-label mb-1">SYNC WINDOW</div>
+                <div class="timer-container">
+                  <svg class="timer-svg">
+                    <circle class="timer-circle-bg" cx="40" cy="40" r="35"></circle>
+                    <circle class="timer-circle-fill" id="timer-bar" cx="40" cy="40" r="35"></circle>
+                  </svg>
+                  <div class="timer-text" id="timer-value">60s</div>
+                </div>
+              </div>
+            </div>
+            <!-- Moves -->
+            <div class="col-6">
+              <div class="stat-box">
+                <div class="stat-label">FLIP ATTEMPTS</div>
+                <div class="stat-value text-white" id="stat-moves">00</div>
+              </div>
+            </div>
+            <!-- Accuracy -->
+            <div class="col-6">
+              <div class="stat-box">
+                <div class="stat-label">SYNC ACCURACY</div>
+                <div class="stat-value text-neon-green" id="stat-accuracy">0%</div>
+              </div>
+            </div>
+            <!-- Combo Multiplier -->
+            <div class="col-12">
+              <div class="stat-box d-flex flex-column align-items-center justify-content-between py-2">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                  <span class="stat-label">COMBO OVERCHARGE</span>
+                  <span class="font-orbitron fw-bold text-neon-magenta" id="stat-combo">x1</span>
+                </div>
+                <div class="combo-gauge-wrapper">
+                  <div class="combo-gauge-fill" id="combo-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard Panel -->
+        <div class="cyber-panel cyber-panel-magenta p-4">
+          <h2 class="font-orbitron fs-5 text-neon-magenta mb-4 d-flex justify-content-between align-items-center">
+            <span>SAVED NEURAL LOGS</span>
+            <i class="fa-solid fa-trophy"></i>
+          </h2>
+          <div class="leaderboard-list" id="leaderboard-list">
+            <!-- Populated via Javascript -->
+            <div class="text-center font-mono text-muted py-3 small">NO DATA REGISTERED IN BUFFER</div>
+          </div>
+          <button class="cyber-btn cyber-btn-magenta w-100 mt-3 btn-sm" id="btn-clear-scores">
+            <i class="fa-solid fa-trash-can me-1"></i> PURGE BUFFER
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Central Neural Deck Game Board -->
+      <div class="col-lg-8">
+        <div class="game-container-relative cyber-panel p-4 d-flex align-items-center justify-content-center">
+          <!-- Canvas for Match Particle bursts -->
+          <canvas id="particles-canvas"></canvas>
+
+          <!-- Overlay when interface is offline / waiting for start -->
+          <div id="start-overlay" class="text-center py-5 d-flex flex-column align-items-center justify-content-center" style="z-index: 5;">
+            <div class="mb-4">
+              <i class="fa-solid fa-triangle-exclamation text-neon-yellow fa-3x animate-pulse"></i>
+            </div>
+            <h3 class="font-orbitron text-neon-cyan mb-2">NEURAL SYNC REQUIRED</h3>
+            <p class="font-mono text-muted mb-4 max-width-350">
+              The memory deck is currently offline. Synchronize the system console interface to start decrypting node matrices.
+            </p>
+            <button class="cyber-btn" id="start-overlay-btn">
+              <i class="fa-solid fa-plug me-2"></i>ESTABLISH SYNC LINK
+            </button>
+          </div>
+
+          <!-- Dynamic Game Board Grid -->
+          <div id="game-board" class="d-none"></div>
+        </div>
+
+        <!-- Instructions Panel -->
+        <div class="cyber-panel p-4 mt-4">
+          <h3 class="font-orbitron fs-6 text-neon-cyan mb-3">DECRYPTION DIRECTIVE</h3>
+          <ul class="font-mono text-muted small ps-3 mb-0">
+            <li class="mb-1">Select card nodes to reveal behind-matrix holographic glyphs.</li>
+            <li class="mb-1">Decrypt identical glyph pairings back-to-back to secure node connectivity.</li>
+            <li class="mb-1">Consecutive node decryptions trigger <strong class="text-neon-magenta">COMBO OVERCHARGE</strong> (multiplied scores up to x4!).</li>
+            <li class="mb-1">A mismatch interrupts the overcharge buffer and drops multiplier back to x1.</li>
+            <li class="mb-1">Clear the board within the <strong class="text-neon-magenta">SYNC WINDOW</strong> countdown before automatic system core shutdown.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decrypted Output Footer -->
+    <footer class="text-center mt-5 py-3 border-top border-secondary opacity-50">
+      <p class="terminal-footer mb-0">
+        [ SYSTEM STATUS: SECURE ] // [ CORE TEMP: STABLE ] // [ LOCATION: DISTRICT 7 ]
+      </p>
+    </footer>
+  </div>
+
+  <!-- Score Submission Modal (Bootstrap 5) -->
+  <div class="modal fade" id="scoreModal" tabindex="-1" aria-labelledby="scoreModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content cyber-modal">
+        <div class="modal-header cyber-modal-header">
+          <h5 class="modal-title font-orbitron text-neon-cyan" id="scoreModalLabel">
+            <i class="fa-solid fa-microchip me-2"></i>DECRYPTION SUCCESSFUL
+          </h5>
+        </div>
+        <div class="modal-body font-mono text-center">
+          <p class="text-neon-green fs-4 mb-2">SYSTEM DECRYPTED!</p>
+          <p class="text-muted small">You successfully reconstructed the grid data sector.</p>
+          <div class="my-4">
+            <div class="text-muted small">FINAL SCORE ACHIEVED</div>
+            <div class="fs-1 text-white font-orbitron" id="modal-final-score">00000</div>
+          </div>
+          <div class="mb-3 text-start">
+            <label for="playerName" class="form-label text-neon-cyan small">ENTER NETRUNNER ALIAS</label>
+            <input type="text" class="form-control bg-dark text-white border-secondary font-mono" id="playerName" maxlength="10" placeholder="NETRUNNER_X" style="border-radius: 4px;">
+            <div class="form-text text-muted small mt-1">Maximum 10 characters alphanumeric.</div>
+          </div>
+        </div>
+        <div class="modal-footer cyber-modal-footer">
+          <button type="button" class="cyber-btn cyber-btn-magenta" id="btn-submit-score">UPLOAD LOGS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Game Code -->
+  <script src="app.js"></script>
+</body>
+</html>
